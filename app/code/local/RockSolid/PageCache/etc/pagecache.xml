@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * This file is part of a RockSolid e.U. Module.
+ *
+ * This RockSolid e.U. Module is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This RockSolid e.U. Module is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * @category  RockSolid
+ * @package   RockSolid_PageCache
+ * @author    Jan F. Kousek <jan@rocksolid.at>
+ * @copyright 2020 RockSolid e.U. | Jan F. Kousek (http://www.rocksolid.at)
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ */
+-->
+
+<config>
+    <proxy>
+        <mage_core_model_abstract>
+            <isObjectNew />
+            <getResource />
+            <getResourceName />
+            <getCollection />
+            <getResourceCollection />
+            <getId />
+            <setId />
+            <getIdFieldName />
+            <getCacheTags />
+            <getCacheIdTags />
+            <cleanModelCache />
+            <load />
+            <save>
+                <replace>_crudGuard</replace>
+            </save>
+            <delete>
+                <replace>_crudGuard</replace>
+            </delete>
+            <afterCommitCallback>
+                <replace>_crudGuard</replace>
+            </afterCommitCallback>
+        </mage_core_model_abstract>
+        <mage_catalog_model_abstract>
+            <setData />
+            <unsetData />
+            <isLockedAttribute />
+            <haslockedattributes />
+            <lockAttribute />
+            <unlockAttribute />
+            <unlockAttributes />
+            <getStore />
+            <getWebsiteStoreIds />
+            <isReadonly />
+        </mage_catalog_model_abstract>
+        <mage_catalog_model_category>
+            <getUrlInstance />
+            <getUrlRewrite />
+            <getTreeModel />
+            <getTreeModelInstance />
+            <getStoreId />
+            <getStoreIds />
+            <getProductCollection />
+            <getAttributes />
+            <getProductsPosition />
+            <getEntityId>
+                <replace>getId</replace>
+            </getEntityId>
+            <getUrlModel />
+            <getAllChildren />
+            <checkId />
+            <verifyIds />
+            <formatUrlKey />
+            <getParentCategory />
+            <getDefaultAttributeSetId>
+                <before>_ensureConstruct</before>
+            </getDefaultAttributeSetId>
+            <hasChildren>
+                <before>_ensureConstruct</before>
+            </hasChildren>
+            <getProductCount>
+                <before>_ensureConstruct</before>
+            </getProductCount>
+            <getCategories>
+                <before>_ensureConstruct</before>
+            </getCategories>
+            <getParentCategories>
+                <before>_ensureConstruct</before>
+            </getParentCategories>
+            <isInRootCategoryList>
+                <before>_ensureConstruct</before>
+            </isInRootCategoryList>
+            <getParentDesignCategory>
+                <before>_ensureConstruct</before>
+            </getParentDesignCategory>
+            <getChildrenCategories>
+                <before>_ensureConstruct</before>
+            </getChildrenCategories>
+            <getChildrenCategoriesWithInactive>
+                <before>_ensureConstruct</before>
+            </getChildrenCategoriesWithInactive>
+            <getName>
+                <around>hasName</around>
+            </getName>
+            <getPath>
+                <around>hasPath</around>
+            </getPath>
+            <getPathInStore>
+                <around>hasPath</around>
+            </getPathInStore>
+            <getPathIds>
+                <around>hasPath</around>
+            </getPathIds>
+            <getLevel>
+                <around>hasPath</around>
+            </getLevel>
+            <getParentId>
+                <around>hasPath</around>
+            </getParentId>
+            <getParentIds>
+                <around>hasPath</around>
+            </getParentIds>
+            <move>
+                <replace>_crudGuard</replace>
+            </move>
+        </mage_catalog_model_category>
+        <mage_catalog_model_product>
+            <getStoreId />
+            <getResourceCollection />
+            <getUrlModel />
+            <getIdBySku />
+            <getStoreIds />
+            <getWebsiteIds />
+            <getcategory />
+            <getCategoryId />
+            <cleanCache />
+            <toArray />
+            <getEntityId>
+                <replace>getId</replace>
+            </getEntityId>
+            <getName>
+                <around>hasName</around>
+            </getName>
+            <getSku>
+                <around>hasSku</around>
+            </getSku>
+            <addAttributeUpdate>
+                <replace>_crudGuard</replace>
+            </addAttributeUpdate>
+            <delete>
+                <replace>_crudGuard</replace>
+            </delete>
+            <getDefaultAttributeSetId>
+                <before>_ensureConstruct</before>
+            </getDefaultAttributeSetId>
+            <canBeShowInCategory>
+                <before>_ensureConstruct</before>
+            </canBeShowInCategory>
+            <getAvailableInCategories>
+                <before>_ensureConstruct</before>
+            </getAvailableInCategories>
+            <getCategoryIds>
+                <before>_ensureConstruct</before>
+            </getCategoryIds>
+            <getCategoryCollection>
+                <before>_ensureConstruct</before>
+            </getCategoryCollection>
+        </mage_catalog_model_product>
+        <mage_cms_model_page>
+            <getAvailableStatuses />
+            <checkIdentifier>
+                <before>_ensureConstruct</before>
+            </checkIdentifier>
+            <getEntityId>
+                <replace>getId</replace>
+            </getEntityId>
+        </mage_cms_model_page>
+    </proxy>
+</config>

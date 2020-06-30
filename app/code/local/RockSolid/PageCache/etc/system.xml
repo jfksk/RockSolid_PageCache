@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * This file is part of a RockSolid e.U. Module.
+ *
+ * This RockSolid e.U. Module is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This RockSolid e.U. Module is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * @category  RockSolid
+ * @package   RockSolid_PageCache
+ * @author    Jan F. Kousek <jan@rocksolid.at>
+ * @copyright 2020 RockSolid e.U. | Jan F. Kousek (http://www.rocksolid.at)
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ */
+-->
+<config>
+    <sections>
+        <system>
+            <groups>
+                <fpc translate="label">
+                    <label>RockSolid Full Page Cache Settings</label>
+                    <comment>Full Page Cache by rocksolid.at</comment>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>600</sort_order>
+                    <fields>
+                        <!-- general -->
+                        <general translate="label">
+                            <label>General</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </general>
+                        <allowed_param_count translate="label">
+                            <label>Max. Allowed Page Query-Paramerters</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>category.html - parameters: 0, category.html?p=2 - parameters 1</comment>
+                        </allowed_param_count>
+                        <nocache_customer_groups translate="label">
+                            <label>Disable Cache By Customer Group</label>
+                            <frontend_type>Multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group_multiselect</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </nocache_customer_groups>
+                        <!-- modifiers -->
+                        <modifiers translate="label">
+                            <label>Cache-Key Modifiers</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modifiers>
+                        <modifier_curency translate="label">
+                            <label>Currencies</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Do you use multiple currencies?</comment>
+                        </modifier_curency>
+                        <modifier_customer_group translate="label">
+                            <label>Customer Groups</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Does the customer group affect the page content (e.g. prices)?</comment>
+                        </modifier_customer_group>
+                        <modifier_tax translate="label">
+                            <label>Tax</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Are prices changed by tax calculation or are different rates by customer displayed?</comment>
+                        </modifier_tax>
+                        <modifier_store translate="label">
+                            <label>Store</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Can a customer change the store without changing the URI?</comment>
+                        </modifier_store>
+                        <!-- dev -->
+                        <dev translate="label">
+                            <label>Developer</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </dev>
+                        <debug_highlight translate="label">
+                            <label>Highlight Dynamic Blocks Generated Blocks</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug_highlight>
+                    </fields>
+                </fpc>
+            </groups>
+        </system>
+    </sections>
+</config>

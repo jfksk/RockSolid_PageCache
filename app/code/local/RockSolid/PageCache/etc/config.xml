@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * This file is part of a RockSolid e.U. Module.
+ *
+ * This RockSolid e.U. Module is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This RockSolid e.U. Module is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * @category  RockSolid
+ * @package   RockSolid_PageCache
+ * @author    Jan F. Kousek <jan@rocksolid.at>
+ * @copyright 2020 RockSolid e.U. | Jan F. Kousek (http://www.rocksolid.at)
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ */
+-->
+<config>
+    <modules>
+        <RockSolid_PageCache>
+            <version>1.0.0</version>
+        </RockSolid_PageCache>
+    </modules>
+    <global>
+        <models>
+            <fpc>
+                <class>RockSolid_PageCache_Model</class>
+            </fpc>
+            <core>
+                <rewrite>
+                    <layout>RockSolid_PageCache_Model_Core_Layout</layout>
+                </rewrite>
+            </core>
+        </models>
+        <helpers>
+            <fpc>
+                <class>RockSolid_PageCache_Helper</class>
+            </fpc>
+        </helpers>
+        <cache>
+            <types>
+                <fpc>
+                    <label>Page Cache</label>
+                    <description>RockSolid Full Page Cache</description>
+                    <tags>FPC</tags>
+                </fpc>
+            </types>
+        </cache>
+        <widget>
+            <related_cache_types>
+                <fpc />
+            </related_cache_types>
+        </widget>
+        <request_rewrite>
+            <model>fpc/controller_rewrite</model>
+        </request_rewrite>
+        <events>
+            <!-- entity events -->
+            <model_save_commit_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerEntityAction</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </model_save_commit_after>
+            <model_delete_commit_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerEntityAction</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </model_delete_commit_after>
+
+            <tag_save_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerTagsChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </tag_save_after>
+            <tag_delete_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerTagsChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </tag_delete_before>
+
+            <review_delete_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerReviewChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </review_delete_before>
+            <review_save_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerReviewChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </review_save_after>
+
+            <catalogsearch_query_save_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerQueryChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </catalogsearch_query_save_after>
+            <!-- index events -->
+            <cataloginventory_stock_item_save_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <type>singleton</type>
+                        <method>registerStockItemChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </cataloginventory_stock_item_save_after>
+            <after_reindex_process_cataloginventory_stock>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </after_reindex_process_cataloginventory_stock>
+            <after_reindex_process_catalog_product_price>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </after_reindex_process_catalog_product_price>
+            <after_reindex_process_catalog_product_flat>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </after_reindex_process_catalog_product_flat>
+            <after_reindex_process_catalog_category_flat>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </after_reindex_process_catalog_category_flat>
+            <after_reindex_process_catalog_category_product>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </after_reindex_process_catalog_category_product>
+        </events>
+    </global>
+
+    <frontend>
+        <routers>
+            <fpc>
+                <use>standard</use>
+                <args>
+                    <module>RockSolid_PageCache</module>
+                    <frontName>fpc</frontName>
+                </args>
+            </fpc>
+        </routers>
+        <events>
+            <!-- block events -->
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>handleAfterBlockRendered</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </core_block_abstract_to_html_after>
+            <!-- fpc events -->
+            <fpc_save_page_catalog_category_view_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>registerCategoryView</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </fpc_save_page_catalog_category_view_before>
+            <fpc_save_page_catalog_product_view_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>registerProductView</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </fpc_save_page_catalog_product_view_before>
+            <fpc_save_page_catalogsearch_result_index_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerSearchTags</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </fpc_save_page_catalogsearch_result_index_before>
+            <!-- controller events -->
+            <controller_action_predispatch>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>handlePreDispatch</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </controller_action_predispatch>
+            <controller_front_send_response_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>handleResponseSendBefore</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </controller_front_send_response_before>
+            <controller_front_send_response_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>handleResponseSendAfter</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </controller_front_send_response_after>
+        </events>
+        <fpc>
+            <routes>
+                <catalog_product_view>fpc_product_view</catalog_product_view>
+                <catalog_category_view>fpc_category_view</catalog_category_view>
+                <catalogsearch_result_index>fpc_searchresult_view</catalogsearch_result_index>
+                <cms_page_view>fpc_cms_view</cms_page_view>
+                <cms_index_index>fpc_cms_view</cms_index_index>
+            </routes>
+            <request>
+                <parameters>
+                    <ignore>
+                        <param>___SID</param>
+                    </ignore>
+                    <block>
+                        <param>___store</param>
+                        <param>___from_store</param>
+                    </block>
+                </parameters>
+            </request>
+            <response>
+                <parameters>
+                    <block>
+                        <param>___SID</param>
+                        <param>___store</param>
+                        <param>___from_store</param>
+                    </block>
+                </parameters>
+                <cachetags>
+                    <ignore>
+                        <block_html />
+                    </ignore>
+                    <rewrite>
+                        <catalog_product>catalog_product_any</catalog_product>
+                        <catalog_category>catalog_category_any</catalog_category>
+                        <cms_page>cms_page_any</cms_page>
+                        <cms_block>cms_block_any</cms_block>
+                    </rewrite>
+                </cachetags>
+            </response>
+        </fpc>
+    </frontend>
+
+    <adminhtml>
+        <events>
+            <!--  cache events -->
+            <core_clean_cache>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </core_clean_cache>
+            <clean_media_cache_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </clean_media_cache_after>
+            <clean_catalog_images_cache_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </clean_catalog_images_cache_after>
+            <clean_configurable_swatches_cache_after>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </clean_configurable_swatches_cache_after>
+            <adminhtml_cache_flush_all>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </adminhtml_cache_flush_all>
+            <controller_action_predispatch_adminhtml_cache_massRefresh>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerMassRefresh</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </controller_action_predispatch_adminhtml_cache_massRefresh>
+            <!-- index events -->
+            <catalogrule_after_apply>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>cleanCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </catalogrule_after_apply>
+            <!-- entity events -->
+            <catalogsearch_query_delete_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>registerQueryChange</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </catalogsearch_query_delete_before>
+            <!-- config events -->
+            <admin_system_config_changed_section_currency>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </admin_system_config_changed_section_currency>
+            <controller_action_postdispatch_adminhtml_system_config_save>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/cache_observer</class>
+                        <method>invalidateCache</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </controller_action_postdispatch_adminhtml_system_config_save>
+        </events>
+    </adminhtml>
+
+    <crontab>
+        <jobs>
+            <fpc_clean_old>
+                <schedule><config_path>fpc/general/scheduler_cron_expr_old</config_path></schedule>
+                <run><model>fpc/observer::cleanOldCache</model></run>
+            </fpc_clean_old>
+        </jobs>
+    </crontab>
+
+    <default>
+        <system>
+            <fpc>
+                <!-- general -->
+                <allowed_param_count>10</allowed_param_count>
+                <nocache_customer_groups></nocache_customer_groups>
+                <scheduler_cron_expr_old>*/15 * * * *</scheduler_cron_expr_old>
+                <!-- modifiers -->
+                <modifier_curency>0</modifier_curency>
+                <modifier_customer_group>0</modifier_customer_group>
+                <modifier_tax>0</modifier_tax>
+                <modifier_store>0</modifier_store>
+                <!-- dev -->
+                <debug_highlight>0</debug_highlight>
+            </fpc>
+        </system>
+    </default>
+</config>
