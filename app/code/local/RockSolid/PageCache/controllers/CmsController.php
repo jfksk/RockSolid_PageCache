@@ -30,7 +30,7 @@ class RockSolid_PageCache_CmsController
 
         /** @var RockSolid_PageCache_Model_Proxy_CmsPage **/
         $page = Mage::getSingleton('fpc/proxy_factory')->getInstance(
-            'fpc/proxy_cmsPage', 'cms/page', ['id' => $id]
+            'fpc/proxy_cmsPage', 'cms/page', ['page_id' => $id]
         );
 
         Mage::register('_singleton/cms/page', $page);

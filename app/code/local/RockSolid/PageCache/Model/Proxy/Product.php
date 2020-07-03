@@ -57,7 +57,7 @@ class RockSolid_PageCache_Model_Proxy_Product
             $proxyFactory = Mage::getModel('fpc/proxy_factory');
             $category = $proxyFactory->getInstance(
                 'fpc/proxy_category', 'catalog/category', [
-                    'id' => $this->_data['category_id']
+                    'entity_id' => $this->_data['category_id']
                 ]
             );
             $this->_data['category'] = $category;

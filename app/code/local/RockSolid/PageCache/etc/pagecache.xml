@@ -31,6 +31,8 @@
             <getResourceCollection />
             <getId />
             <setId />
+            <getEntityId />
+            <setEntityId />
             <getIdFieldName />
             <getCacheTags />
             <getCacheIdTags />
@@ -68,9 +70,6 @@
             <getProductCollection />
             <getAttributes />
             <getProductsPosition />
-            <getEntityId>
-                <replace>getId</replace>
-            </getEntityId>
             <getUrlModel />
             <getAllChildren />
             <checkId />
@@ -140,9 +139,6 @@
             <getCategoryId />
             <cleanCache />
             <toArray />
-            <getEntityId>
-                <replace>getId</replace>
-            </getEntityId>
             <getName>
                 <around>hasName</around>
             </getName>
@@ -173,12 +169,11 @@
         </mage_catalog_model_product>
         <mage_cms_model_page>
             <getAvailableStatuses />
+            <getPageId />
+            <setPageId />
             <checkIdentifier>
                 <before>_ensureConstruct</before>
             </checkIdentifier>
-            <getEntityId>
-                <replace>getId</replace>
-            </getEntityId>
         </mage_cms_model_page>
     </proxy>
 </config>

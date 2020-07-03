@@ -35,7 +35,7 @@ class RockSolid_PageCache_ProductController
         $proxyFactory = Mage::getSingleton('fpc/proxy_factory');
 
         $data = $fpcRequestController->getMetaData('product');
-        $data['id'] = $productId;
+        $data['entity_id'] = $productId;
 
         /** @var RockSolid_PageCache_Model_Proxy_Product **/
         $product = $proxyFactory->getInstance(
@@ -51,7 +51,7 @@ class RockSolid_PageCache_ProductController
 
         if ($categoryId) {
             $data = $fpcRequestController->getMetaData('category');
-            $data['id'] = $categoryId;
+            $data['entity_id'] = $categoryId;
 
             /** @var RockSolid_PageCache_Model_Proxy_Category **/
             $category = $proxyFactory->getInstance(
