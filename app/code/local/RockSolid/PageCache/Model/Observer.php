@@ -58,7 +58,8 @@ class RockSolid_PageCache_Model_Observer
         /** @var Mage_Core_Block_Abstract $block */
         $block = $event->getBlock();
 
-        if ($block->getFpcCacheable() !== false) {
+        $cacheable = $block->getFpcCacheable();
+        if (in_array($cacheable, [null, '1', 'true', 1, true], true)) {
             if (!$block->hasData('fpc_is_non_cacheable_sibling') && $block->getData('type') != 'core/text_list') {
                 $this->_responseController->addCacheTags($block->getCacheTags());
             }
