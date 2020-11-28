@@ -137,7 +137,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
     {
         $path = $this->getInterceptorCodeDir();
         if (!file_exists($path) || !is_dir($path)) {
-            mkdir($path, 0777, true);
+            mkdir($path, 0770, true);
         }
 
         $intercepted = array_map('strtolower', class_parents($this->_for));
@@ -299,7 +299,7 @@ EOD;
 
         $file = $this->getInterceptorCodeDir() . $this->_getInterceptorFileName();
         file_put_contents($file, implode("\n", $code), LOCK_EX);
-
+        chmod($file, 0660);
     }
 
     /**
