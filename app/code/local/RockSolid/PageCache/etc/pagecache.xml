@@ -33,7 +33,9 @@
             <setId />
             <getEntityId />
             <setEntityId />
-            <getIdFieldName />
+            <getIdFieldName>
+                <before>_ensureConstruct</before>
+            </getIdFieldName>
             <getCacheTags />
             <getCacheIdTags />
             <cleanModelCache />
