@@ -27,27 +27,19 @@ class RockSolid_PageCache_Model_Observer
     private $_responseController = null;
 
     /**
-     * @var bool
-     */
-    private $_canCacheResponse = false;
-
-    /**
      * @var RockSolid_PageCache_Model_Controller_Request|null
      */
     private $_requestController = null;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $_isCachedRequest = false;
+    private $_isRequestCacheable = null;
 
     public function __construct()
     {
         $this->_responseController = Mage::getSingleton('fpc/controller_response');
-        $this->_canCacheResponse = $this->_responseController->canProcess();
-
         $this->_requestController = Mage::getSingleton('fpc/controller_request');
-        $this->_isCachedRequest = $this->_requestController->isCached();
     }
 
     /**
@@ -59,7 +51,7 @@ class RockSolid_PageCache_Model_Observer
      */
     public function handleAfterBlockRendered(Varien_Event_Observer $event)
     {
-        if (!$this->_canCacheResponse || $this->_isCachedRequest) {
+        if (!$this->_isRequestCacheable()) {
             return;
         }
 
@@ -143,7 +135,7 @@ class RockSolid_PageCache_Model_Observer
      */
     public function handlePreDispatch(Varien_Event_Observer $event)
     {
-        if (!$this->_isCacheEnabled()) {
+        if (!$this->_responseController->canProcess()) {
             return;
         }
 
@@ -159,13 +151,13 @@ class RockSolid_PageCache_Model_Observer
      */
     public function handleResponseSendBefore(Varien_Event_Observer $event)
     {
-        if (!$this->_isCacheEnabled()) {
+        if (!$this->_responseController->canProcess()) {
             return;
         }
 
         $this->_responseController->memorizeRequestIdModifier();
 
-        if (!$this->_canCacheResponse || $this->_isCachedRequest) {
+        if (!$this->_isRequestCacheable()) {
             return;
         }
 
@@ -207,11 +199,7 @@ class RockSolid_PageCache_Model_Observer
      */
     public function handleResponseSendAfter(Varien_Event_Observer $event)
     {
-        if (!$this->_isCacheEnabled()) {
-            return;
-        }
-
-        if (!$this->_isCachedRequest) {
+        if (!$this->_requestController->isCached()) {
             return;
         }
 
@@ -230,7 +218,7 @@ class RockSolid_PageCache_Model_Observer
      */
     public function registerCategoryView(Varien_Event_Observer $event)
     {
-        if (!$this->_isCacheEnabled()) {
+        if (!$this->_isRequestCacheable()) {
             return;
         }
 
@@ -254,7 +242,7 @@ class RockSolid_PageCache_Model_Observer
      */
     public function registerProductView(Varien_Event_Observer $event)
     {
-        if (!$this->_isCacheEnabled()) {
+        if (!$this->_isRequestCacheable()) {
             return;
         }
 
@@ -289,8 +277,15 @@ class RockSolid_PageCache_Model_Observer
      *
      * @return bool
      */
-    protected function _isCacheEnabled()
+    protected function _isRequestCacheable()
     {
-        return Mage::getSingleton('fpc/cache')->isActive();
+        if ($this->_isRequestCacheable !== null) {
+            return $this->_isRequestCacheable;
+        }
+
+        $this->_isRequestCacheable = $this->_responseController->canProcess()
+            && !$this->_requestController->isCached();
+
+        return $this->_isRequestCacheable;
     }
 }
