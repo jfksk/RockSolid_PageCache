@@ -3,10 +3,7 @@
     <global>
         <full_page_cache>
             <lifetime>86400</lifetime>
-            <backend>Cm_Cache_Backend_File</backend>
             <backend_options>
-                <hashed_directory_level>1</hashed_directory_level>
-                <hashed_directory_umask>0700</hashed_directory_umask>
                 <file_name_prefix>fpc</file_name_prefix>
                 <cache_dir><![CDATA[page_cache]]></cache_dir>
             </backend_options>
