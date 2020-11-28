@@ -234,7 +234,7 @@ class RockSolid_PageCache_Model_Cache_Observer
         $query = Mage::helper('catalogsearch')->getQueryText();
         $tag = Mage_CatalogSearch_Model_Query::CACHE_TAG  . '_' . md5($query);
 
-        $observer->getResponseProcessor()->addCacheTags([$tag]);
+        $observer->getResponseController()->addCacheTags([$tag]);
     }
 
     /**
