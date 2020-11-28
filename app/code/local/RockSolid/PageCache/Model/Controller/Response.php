@@ -124,6 +124,18 @@ class RockSolid_PageCache_Model_Controller_Response
             }
         }
 
+        $flag = new Varien_Object(['can_process' => true]);
+
+        Mage::dispatchEvent('fpc_can_process_response', ['flag' => $flag]);
+        if (!$flag->getCanProcess()) {
+            return $this->_canProcess = false;
+        }
+
+        Mage::dispatchEvent("fpc_can_process_response_{$fqn}", ['flag' => $flag]);
+        if (!$flag->getCanProcess()) {
+            return $this->_canProcess = false;
+        }
+
         return $this->_canProcess = true;
     }
 

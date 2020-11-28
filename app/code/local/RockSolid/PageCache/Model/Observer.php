@@ -168,24 +168,6 @@ class RockSolid_PageCache_Model_Observer
             return;
         }
 
-        $flag = new Varien_Object(['can_cache' => true]);
-        Mage::dispatchEvent(
-            'fpc_capture_response_before', ['flag' => $flag]
-        );
-
-        if (!$flag->getCanCache()) {
-            return;
-        }
-
-        $fqn = $front->getAction()->getFullActionName();
-        Mage::dispatchEvent(
-            "fpc_capture_response_{$fqn}_before", ['flag' => $flag]
-        );
-
-        if (!$flag->getCanCache()) {
-            return;
-        }
-
         $this->_responseController->process();
     }
 
