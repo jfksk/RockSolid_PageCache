@@ -116,7 +116,7 @@ class RockSolid_PageCache_Model_Cache_Observer
         $productCollection = $object->getEntityCollection()->addTagFilter($object->getId());
 
         foreach ($productCollection as $product) {
-            $tags[] = Mage_Catalog_Model_PRODUCT::CACHE_TAG . '_' . $product->getId();
+            $tags[] = Mage_Catalog_Model_Product::CACHE_TAG . '_' . $product->getId();
         }
 
         $this->_getCacheInstance()->clean($tags);
@@ -140,7 +140,7 @@ class RockSolid_PageCache_Model_Cache_Observer
 
         $object = $observer->getEvent()->getObject();
         $this->_getCacheInstance()->clean(
-            [Mage_Catalog_Model_PRODUCT::CACHE_TAG . '_' . $object->getEntityPkValue()]
+            [Mage_Catalog_Model_Product::CACHE_TAG . '_' . $object->getEntityPkValue()]
         );
     }
 
@@ -161,7 +161,7 @@ class RockSolid_PageCache_Model_Cache_Observer
         $object = $observer->getEvent()->getItem();
         if ($object->getStockStatusChangedAuto()) {
             $this->_getCacheInstance()->clean(
-                [Mage_Catalog_Model_PRODUCT::CACHE_TAG . '_' .  $object->getProductId()]
+                [Mage_Catalog_Model_Product::CACHE_TAG . '_' .  $object->getProductId()]
             );
         }
     }
