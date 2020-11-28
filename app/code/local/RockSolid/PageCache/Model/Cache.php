@@ -103,6 +103,22 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
     }
 
     /**
+     * Flush cached data
+     *
+     * @return  bool
+     */
+    public function flush()
+    {
+        $res = parent::flush();
+
+        mageDelTree(
+            Mage::getSingleton('fpc/proxyFactory')->getInterceptorCodeDir()
+        );
+
+        return $res;
+    }
+
+    /**
      * Mark specific cache type(s) as invalidated
      *
      * @param string|array $typeCode
