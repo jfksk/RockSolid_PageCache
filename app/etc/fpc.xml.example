@@ -26,7 +26,7 @@
                 </request>
                 <response>
                     <parameters>
-                        <ignore>
+                        <block>
                             <param>utm_source</param>
                             <param>utm_medium</param>
                             <param>utm_campaign</param>
@@ -35,7 +35,7 @@
                             <param>gclid</param>
                             <param>gclsrc</param>
                             <param>fb_locale</param>
-                        </ignore>
+                        </block>
                     </parameters>
                 </response>
             </fpc>
