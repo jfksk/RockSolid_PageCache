@@ -95,7 +95,7 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
             );
 
             mageDelTree(
-                Mage::getSingleton('fpc/proxyFactory')->getInterceptorCodeDir()
+                Mage::getSingleton('fpc/proxy_factory')->getInterceptorCodeDir()
             );
         }
 
@@ -112,7 +112,7 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
         $res = parent::flush();
 
         mageDelTree(
-            Mage::getSingleton('fpc/proxyFactory')->getInterceptorCodeDir()
+            Mage::getSingleton('fpc/proxy_factory')->getInterceptorCodeDir()
         );
 
         return $res;
