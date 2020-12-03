@@ -219,14 +219,14 @@
                 </observers>
             </fpc_save_page_catalogsearch_result_index_before>
             <!-- controller events -->
-            <controller_action_predispatch>
+            <controller_action_layout_generate_blocks_before>
                 <observers>
                     <rocksolid_pagecache>
                         <class>fpc/observer</class>
-                        <method>handlePreDispatch</method>
+                        <method>handleLayoutGenerateBlocksBefore</method>
                     </rocksolid_pagecache>
                 </observers>
-            </controller_action_predispatch>
+            </controller_action_layout_generate_blocks_before>
             <controller_front_send_response_before>
                 <observers>
                     <rocksolid_pagecache>

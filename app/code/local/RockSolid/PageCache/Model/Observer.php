@@ -130,11 +130,11 @@ class RockSolid_PageCache_Model_Observer
     /**
      * Prepare request for FPC
      *
-     *  EVENT: controller_action_predispatch
+     *  EVENT: controller_action_layout_generate_blocks_before
      *
      * @param Varien_Event_Observer $event
      */
-    public function handlePreDispatch(Varien_Event_Observer $event)
+    public function handleLayoutGenerateBlocksBefore(Varien_Event_Observer $event)
     {
         if (!$this->_responseController->canProcess()) {
             return;
