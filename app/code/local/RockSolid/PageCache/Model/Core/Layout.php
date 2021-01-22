@@ -159,9 +159,12 @@ class RockSolid_PageCache_Model_Core_Layout extends Mage_Core_Model_Layout
                 }
             }
 
-
             if (($method == 'insert' || $method == 'append') && $this->_lazyRendering) {
                 $this->generateSiblings($args['block']);
+            }
+
+            if (class_exists('Mage_Core_Helper_Security')) {
+                Mage::helper('core/security')->validateAgainstBlockMethodBlacklist($block, $method, $args);
             }
 
             $this->_translateLayoutNode($node, $args);
