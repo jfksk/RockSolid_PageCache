@@ -189,7 +189,7 @@ class RockSolid_PageCache_Model_Observer
         if (php_sapi_name() == 'fpm-fcgi' && function_exists('fastcgi_finish_request')) {
             ignore_user_abort(true);
             fastcgi_finish_request();
-       }
+        }
     }
 
     /**
