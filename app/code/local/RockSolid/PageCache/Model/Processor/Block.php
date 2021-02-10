@@ -49,6 +49,7 @@ class RockSolid_PageCache_Model_Processor_Block
      */
     public function applyContent(string &$content) : bool
     {
+        $count = 0;
         $content = str_replace(
             $this->_placeholder->toString(),
             $this->getRenderedContent(),
@@ -104,6 +105,7 @@ HTML;
     {
         $tag = preg_quote($this->_placeholder->toString(), '/');
 
+        $count = 0;
         $content = preg_replace(
             "/($tag.*?$tag)/ims",
             $this->_placeholder->toString(),
@@ -139,6 +141,7 @@ HTML;
      */
     public function removePlaceholder(string &$content) : bool
     {
+        $count = 0;
         $content = str_replace(
             $this->_placeholder->toString(),
             '',
