@@ -140,7 +140,7 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
      */
     public function isActive() : bool
     {
-        return $this->canUse(self::TYPE_CODE);
+        return Mage::app()->useCache(self::TYPE_CODE);
     }
 
     /**
