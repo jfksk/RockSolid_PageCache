@@ -118,13 +118,9 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
             return $this->_params;
         }
 
-        foreach ($rules as $key => $value) {
-            if (array_key_exists($key, $this->_params)) {
-                if ($value === null) {
-                    unset($this->_params[$key]);
-                } else if ($this->_params[$key] == $value) {
-                    unset($this->_params[$key]);
-                }
+        foreach ($rules as $key => $param) {
+            if (array_key_exists($param, $this->_params)) {
+                unset($this->_params[$param]);
             }
         }
 
@@ -144,18 +140,11 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
         }
 
         $parameters = $this->_getParameters();
-
-        foreach ($rules as $key => $value) {
-            if (array_key_exists($key, $parameters)) {
-                if ($value === null) {
-                    return true;
-                } else if ($parameters[$key] == $value) {
-                    return true;
-                }
-            }
+        if (empty($parameters)) {
+            return false;
         }
 
-        return false;
+        return count(array_intersect($rules, array_keys($parameters))) > 0;
     }
 
     /**
@@ -187,32 +176,6 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
         }
 
         return self::$_routeConfig;
-    }
-
-    /**
-     * Parse the param configuration from
-     *   "config/frontend/fpc/{controller}/params/{type}"
-     *   into an array
-     *
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function _parseParameterConfig(array $config) : array
-    {
-        $data = [];
-
-        foreach ($config as $key => $param) {
-            if ($key != 'param') {
-                $data[$key] = $param;
-            } else if (is_array($param)) {
-                $data[$param['name']] = $param['value'];
-            } else {
-                $data[$param] = null;
-            }
-        }
-
-        return $data;
     }
 
     /**

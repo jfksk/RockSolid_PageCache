@@ -151,17 +151,17 @@ class RockSolid_PageCache_Model_Controller_Request
 
     /**
      * Returns the param configuration from
-     *   "config/frontend/fpc/request/params/{type}"
+     *   "config/frontend/fpc/request/parameters/{type}"
      *
      * @param string $type
      * @return array
      */
-    protected function _getParameterConfig($type) : array
+    protected function _getParameterConfig(string $type) : array
     {
         $config = Mage::getConfig()->getNode("frontend/fpc/request/parameters/$type");
 
         if ($config) {
-            return $this->_parseParameterConfig($config->asArray());
+            return $config->asArray();
         }
 
         return [];

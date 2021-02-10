@@ -255,20 +255,20 @@
             <request>
                 <parameters>
                     <ignore>
-                        <param>___SID</param>
+                        <sid>___SID</sid>
                     </ignore>
                     <block>
-                        <param>___store</param>
-                        <param>___from_store</param>
+                        <store>___store</store>
+                        <fromstore>___from_store</fromstore>
                     </block>
                 </parameters>
             </request>
             <response>
                 <parameters>
                     <block>
-                        <param>___SID</param>
-                        <param>___store</param>
-                        <param>___from_store</param>
+                        <sid>___SID</sid>
+                        <sore>___store</sore>
+                        <fromstore>___from_store</fromstore>
                     </block>
                 </parameters>
                 <cachetags>
