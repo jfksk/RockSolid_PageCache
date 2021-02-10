@@ -114,7 +114,7 @@ class RockSolid_PageCache_Model_Cache_Item implements Serializable
      */
     public function unserialize($serialized)
     {
-        $data = unserialize($serialized);
+        $data = unserialize($serialized, ['allowed_classes' => false]);
 
         $this->_content = $data['content'] ?? '';
         $this->_metaData = $data['meta'] ?? [];
