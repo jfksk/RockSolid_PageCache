@@ -24,6 +24,23 @@ class RockSolid_PageCache_Model_Core_Layout extends Mage_Core_Model_Layout
     private $_lazyRendering = false;
 
     /**
+     * Retrieve messages block
+     *
+     * @return Mage_Core_Block_Messages
+     */
+    public function getMessagesBlock()
+    {
+        $block = $this->getBlock('messages');
+        if (!$block) {
+            $block = $this->createBlock('core/messages', 'messages');
+        }
+
+        $block->setFpcCacheable(false);
+
+        return $block;
+    }
+
+    /**
      * Add block object to layout based on xml node data
      *
      * @param Varien_Simplexml_Element $node
