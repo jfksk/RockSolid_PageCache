@@ -26,6 +26,17 @@ class RockSolid_PageCache_Model_Proxy_Category
     extends Mage_Catalog_Model_Category_Interceptor
 {
     /**
+     * Retrieve entity id field name in entity table
+     * Rewritten because its factually static
+     *
+     * @return string
+     */
+    public function getIdFieldName()
+    {
+        return 'entity_id';
+    }
+
+    /**
      * @return bool
      */
     public function getDisableFlat(): bool

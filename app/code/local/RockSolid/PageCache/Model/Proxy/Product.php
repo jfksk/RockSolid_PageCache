@@ -26,6 +26,17 @@ class RockSolid_PageCache_Model_Proxy_Product
     extends Mage_Catalog_Model_Product_Interceptor
 {
     /**
+     * Retrieve entity id field name in entity table
+     * Rewritten because its factually static
+     *
+     * @return string
+     */
+    public function getIdFieldName()
+    {
+        return 'entity_id';
+    }
+
+    /**
      * Check availability display product in category
      *
      * @param   int $categoryId
@@ -54,7 +65,7 @@ class RockSolid_PageCache_Model_Proxy_Product
         }
 
         if (isset($this->_data['category_id'])) {
-            $proxyFactory = Mage::getModel('fpc/proxy_factory');
+            $proxyFactory = Mage::getSingleton('fpc/proxy_factory');
             $category = $proxyFactory->getInstance(
                 'fpc/proxy_category', 'catalog/category', [
                     'entity_id' => $this->_data['category_id']
