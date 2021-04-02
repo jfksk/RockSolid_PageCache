@@ -141,52 +141,55 @@ class RockSolid_PageCache_Model_Core_Layout extends Mage_Core_Model_Layout
             $block = $this->getBlock($parentName);
         }
 
-        if (!empty($block)) {
-            $args = (array)$node->children();
-            unset($args['@attributes']);
+        if (empty($block)) {
+            Varien_Profiler::stop($_profilerKey);
+            return $this;
+        }
 
-            foreach ($args as $key => $arg) {
-                if (($arg instanceof Mage_Core_Model_Layout_Element)) {
-                    if (isset($arg['helper'])) {
-                        $helperName = explode('/', (string)$arg['helper']);
-                        $helperMethod = array_pop($helperName);
-                        $helperName = implode('/', $helperName);
-                        $arg = $arg->asArray();
-                        unset($arg['@']);
-                        $args[$key] = call_user_func_array(array(Mage::helper($helperName), $helperMethod), $arg);
-                    } else {
-                        /**
-                         * if there is no helper we hope that this is assoc array
-                         */
-                        $arr = [];
-                        foreach($arg as $subkey => $value) {
-                            $arr[(string)$subkey] = $value->asArray();
-                        }
-                        if (!empty($arr)) {
-                            $args[$key] = $arr;
-                        }
+        $args = (array)$node->children();
+        unset($args['@attributes']);
+
+        foreach ($args as $key => $arg) {
+            if (($arg instanceof Mage_Core_Model_Layout_Element)) {
+                if (isset($arg['helper'])) {
+                    $helperName = explode('/', (string)$arg['helper']);
+                    $helperMethod = array_pop($helperName);
+                    $helperName = implode('/', $helperName);
+                    $arg = $arg->asArray();
+                    unset($arg['@']);
+                    $args[$key] = Mage::helper($helperName)->$helperMethod(...array_values($arg));
+                } else {
+                    /**
+                     * if there is no helper we hope that this is assoc array
+                     */
+                    $arr = [];
+                    foreach($arg as $subkey => $value) {
+                        $arr[(string)$subkey] = $value->asArray();
+                    }
+                    if (!empty($arr)) {
+                        $args[$key] = $arr;
                     }
                 }
             }
-
-            if (isset($node['json'])) {
-                $json = explode(' ', (string)$node['json']);
-                foreach ($json as $arg) {
-                    $args[$arg] = Mage::helper('core')->jsonDecode($args[$arg]);
-                }
-            }
-
-            if (($method == 'insert' || $method == 'append') && $this->_lazyRendering) {
-                $this->generateSiblings($args['block']);
-            }
-
-            if (class_exists('Mage_Core_Helper_Security')) {
-                Mage::helper('core/security')->validateAgainstBlockMethodBlacklist($block, $method, $args);
-            }
-
-            $this->_translateLayoutNode($node, $args);
-            call_user_func_array(array($block, $method), $args);
         }
+
+        if (isset($node['json'])) {
+            $json = explode(' ', (string)$node['json']);
+            foreach ($json as $arg) {
+                $args[$arg] = Mage::helper('core')->jsonDecode($args[$arg]);
+            }
+        }
+
+        if ($this->_lazyRendering && ($method == 'insert' || $method == 'append')) {
+            $this->generateSiblings($args['block']);
+        }
+
+        if (class_exists('Mage_Core_Helper_Security')) {
+            Mage::helper('core/security')->validateAgainstBlockMethodBlacklist($block, $method, $args);
+        }
+
+        $this->_translateLayoutNode($node, $args);
+        $block->$method(...array_values($args));
 
         Varien_Profiler::stop($_profilerKey);
 
