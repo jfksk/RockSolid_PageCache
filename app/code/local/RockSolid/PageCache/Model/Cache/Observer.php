@@ -186,13 +186,9 @@ class RockSolid_PageCache_Model_Cache_Observer
 
         if ($query->dataHasChangedFor('num_results')) {
             $this->_getCacheInstance()->clean([$tag]);
-        }
-
-        if ($query->dataHasChangedFor('query_text')) {
+        } else if ($query->dataHasChangedFor('query_text')) {
             $this->_getCacheInstance()->clean([$tag]);
-        }
-
-        if ($query->dataHasChangedFor('redirect')) {
+        } else if ($query->dataHasChangedFor('redirect')) {
             $this->_getCacheInstance()->clean([$tag]);
         }
     }
