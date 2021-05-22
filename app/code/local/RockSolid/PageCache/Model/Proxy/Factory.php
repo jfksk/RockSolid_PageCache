@@ -123,7 +123,6 @@ class RockSolid_PageCache_Model_Proxy_Factory
      */
     protected function _getInterceptorFileName(): string
     {
-
         return str_replace('_', '', $this->_getInterceptorClassName()) . '.php';
     }
 
@@ -258,11 +257,6 @@ $code[]  = <<<'EOD'
 
         $this->_loadCalled = true;
 
-        $this->_initOldFieldsMap();
-        if ($this->_oldFieldsMap) {
-            $this->_prepareSyncFieldsMap();
-        }
-
         $this->_ensureConstruct();
 
         $this->load($this->getId());
@@ -293,7 +287,6 @@ $code[]  = <<<'EOD'
         return parent::getData($key);
     }
 EOD;
-
 
         $code[] = '}';
 
