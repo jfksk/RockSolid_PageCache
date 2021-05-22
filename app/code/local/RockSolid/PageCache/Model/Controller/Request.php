@@ -51,21 +51,18 @@ class RockSolid_PageCache_Model_Controller_Request
      *
      * @return bool
      */
-    public function canProcess() : bool
+    public function canProcess(): bool
     {
         if ($this->_canProcess !== null) {
             return $this->_canProcess;
         }
 
-        if (Mage::app()->getRequest()->getInternallyForwarded()) {
+        $request = Mage::app()->getRequest();
+        if ($request->getInternallyForwarded() || !$request->isGet()) {
             return $this->_canProcess = false;
         }
 
         if (!Mage::getSingleton('fpc/cache')->isActive()) {
-            return $this->_canProcess = false;
-        }
-
-        if (!Mage::app()->getRequest()->isGet()) {
             return $this->_canProcess = false;
         }
 
@@ -85,33 +82,28 @@ class RockSolid_PageCache_Model_Controller_Request
      *
      * @return bool
      */
-    public function process() : bool
+    public function process(): bool
     {
         try {
             if (!$this->canProcess()) {
                 return false;
             }
 
-            $processorClass = Mage::getConfig()
-                ->getModelClassName('fpc/processor_page');
-
             $cacheEntry = $this->_getCache()->load($this->getCacheId());
-
             if (!$cacheEntry) {
                 return $this->_canProcess = false;
             }
 
             $this->_cacheItem = unserialize($cacheEntry);
+            $this->_isCached  = true;
 
-            $this->_isCached = true;
-
+            $processorClass = Mage::getConfig()->getModelClassName('fpc/processor_page');
             $this->_pageProcessor = new $processorClass(
                 $this->getCacheId(), $this->_cacheItem->getContent()
             );
 
             $configuration = $this->_getRouteConfiguration();
             $fqn = $this->getMetaData('request/fqn');
-
             if (!isset($configuration[$fqn]) || $configuration[$fqn] == 'disabled') {
                 return $this->_canProcess = false;
             }
@@ -154,9 +146,9 @@ class RockSolid_PageCache_Model_Controller_Request
      *   "config/frontend/fpc/request/parameters/{type}"
      *
      * @param string $type
-     * @return array
+     * @return array<string, string>
      */
-    protected function _getParameterConfig(string $type) : array
+    protected function _getParameterConfig(string $type): array
     {
         $config = Mage::getConfig()->getNode("frontend/fpc/request/parameters/$type");
 
@@ -172,7 +164,7 @@ class RockSolid_PageCache_Model_Controller_Request
      *
      * @return string
      */
-    public function getRequestIdModifier() : string
+    public function getRequestIdModifier(): string
     {
         $hash = Mage::getSingleton('core/cookie')->get(self::ID_MODIFIER_COOKIE);
 
@@ -218,7 +210,7 @@ class RockSolid_PageCache_Model_Controller_Request
      *
      * @return bool
      */
-    public function isCached() : bool
+    public function isCached(): bool
     {
         return $this->_isCached;
     }

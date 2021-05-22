@@ -259,7 +259,7 @@ class RockSolid_PageCache_Model_Cache_Observer
      *
      * @return bool
      */
-    protected function _isCacheEnabled()
+    protected function _isCacheEnabled(): bool
     {
         return Mage::getSingleton('fpc/cache')->isActive();
     }
@@ -269,7 +269,7 @@ class RockSolid_PageCache_Model_Cache_Observer
      *
      * @return RockSolid_PageCache_Model_Cache
      */
-    protected function _getCacheInstance()
+    protected function _getCacheInstance(): RockSolid_PageCache_Model_Cache
     {
         return Mage::getSingleton('fpc/cache');
     }

@@ -96,9 +96,9 @@ class RockSolid_PageCache_Model_Observer
      *
      * @param  Mage_Core_Block_Abstract $block
      *
-     * @return array attribute data from block
+     * @return array<string, mixed> attribute data from block
      */
-    private function _extractBlockAttributes(Mage_Core_Block_Abstract $block) : array
+    private function _extractBlockAttributes(Mage_Core_Block_Abstract $block): array
     {
         if ($attrString = $block->getData('fpc_attributes')) {
             $attributes = array_map(
@@ -116,9 +116,9 @@ class RockSolid_PageCache_Model_Observer
      *
      * @param  Mage_Core_Block_Abstract $block
      *
-     * @return array cache key info from block
+     * @return array<string, mixed> cache key info from block
      */
-    private function _extractBlockInfo(Mage_Core_Block_Abstract $block) : array
+    private function _extractBlockInfo(Mage_Core_Block_Abstract $block): array
     {
         return array_filter(
             $block->getCacheKeyInfo(),
@@ -162,9 +162,7 @@ class RockSolid_PageCache_Model_Observer
             return;
         }
 
-        $front = $event->getFront();
-        $response = $front->getResponse();
-
+        $response = $event->getFront()->getResponse();
         if ($response->getHttpResponseCode() != 200) {
             return;
         }
@@ -260,7 +258,7 @@ class RockSolid_PageCache_Model_Observer
      *
      * @return bool
      */
-    protected function _isRequestCacheable()
+    protected function _isRequestCacheable(): bool
     {
         if ($this->_isRequestCacheable !== null) {
             return $this->_isRequestCacheable;

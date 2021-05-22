@@ -28,7 +28,7 @@ abstract class RockSolid_PageCache_Controller_Action extends Mage_Core_Controlle
      *
      * @return RockSolid_PageCache_Model_Controller_Request
      */
-    public function getFpcRequestController() : RockSolid_PageCache_Model_Controller_Request
+    public function getFpcRequestController(): RockSolid_PageCache_Model_Controller_Request
     {
         return Mage::getSingleton('fpc/controller_request');
     }
@@ -38,7 +38,7 @@ abstract class RockSolid_PageCache_Controller_Action extends Mage_Core_Controlle
      *
      * @return self
      */
-    public function prepareLayout() : self
+    public function prepareLayout(): self
     {
         $profilerKey = self::PROFILER_KEY . '::' . $this->getFullActionName();
 
@@ -64,7 +64,7 @@ abstract class RockSolid_PageCache_Controller_Action extends Mage_Core_Controlle
      * @return self
      * @throws Mage_Core_Exception
      */
-    public function renderLayout($output='') : self
+    public function renderLayout($output=''): self
     {
         if ($output != '') {
             throw new Mage_Core_Exception(

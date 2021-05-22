@@ -27,13 +27,13 @@ class RockSolid_PageCache_Model_Cache_Item implements Serializable
     private $_content;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $_metaData;
 
     /**
      * @param string $content
-     * @param array $metaData
+     * @param array<string, mixed> $metaData
      */
     public function __construct(string $content, array $metaData)
     {
@@ -46,7 +46,7 @@ class RockSolid_PageCache_Model_Cache_Item implements Serializable
      *
      * @return string
      */
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->_content;
     }

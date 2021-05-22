@@ -30,6 +30,9 @@ class RockSolid_PageCache_Model_Processor_Block
      */
     private $_placeholder;
 
+    /**
+     * @var Mage_Core_Block_Abstract|null
+     */
     private $_block = null;
 
     /**
@@ -47,7 +50,7 @@ class RockSolid_PageCache_Model_Processor_Block
      *
      * @return bool
      */
-    public function applyContent(string &$content) : bool
+    public function applyContent(string &$content): bool
     {
         $count = 0;
         $content = str_replace(
@@ -65,7 +68,7 @@ class RockSolid_PageCache_Model_Processor_Block
      *
      * @return string
      */
-    public function getRenderedContent() : string
+    public function getRenderedContent(): string
     {
         $block = $this->getBlock();
 
@@ -101,7 +104,7 @@ HTML;
      *
      * @return bool
      */
-    public function replaceContent(string &$content) : bool
+    public function replaceContent(string &$content): bool
     {
         $tag = preg_quote($this->_placeholder->toString(), '/');
 
@@ -124,7 +127,7 @@ HTML;
      *
      * @return self
      */
-    public function prepareContent(string &$content) : self
+    public function prepareContent(string &$content): self
     {
         $marker = $this->_placeholder->toString();
         $content = $marker . $content . $marker;
@@ -139,7 +142,7 @@ HTML;
      *
      * @return bool
      */
-    public function removePlaceholder(string &$content) : bool
+    public function removePlaceholder(string &$content): bool
     {
         $count = 0;
         $content = str_replace(

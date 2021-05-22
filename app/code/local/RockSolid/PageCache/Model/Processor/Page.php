@@ -40,7 +40,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->_id;
     }
@@ -50,7 +50,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return string
      */
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->_content;
     }
@@ -58,21 +58,23 @@ class RockSolid_PageCache_Model_Processor_Page
     /**
      * Generate all blocks
      *
-     * @return void
+     * @return self
      */
-    public function generateBlocks()
+    public function generateBlocks(): self
     {
         foreach ($this->getBlockProcessors() as $processor) {
             $processor->getBlock();
         }
+
+        return $this;
     }
 
     /**
      * Retrurns an array of placeholder instances used on the page
      *
-     * @return array
+     * @return array<int, RockSolid_PageCache_Model_Processor_Block>
      */
-    public function getBlockProcessors() : array
+    public function getBlockProcessors(): array
     {
         if ($this->_blockProcessors !== null) {
             return $this->_blockProcessors;
@@ -105,7 +107,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return self
      */
-    public function replaceContent() : self
+    public function replaceContent(): self
     {
         foreach ($this->getBlockProcessors() as $processor) {
             $processor->replaceContent($this->_content);
@@ -123,7 +125,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return bool
      */
-    public function applyContent()
+    public function applyContent(): bool
     {
         $result = true;
         foreach ($this->getBlockProcessors() as $id => $processor) {
@@ -146,7 +148,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return self
      */
-    public function removePlaceholders() : self
+    public function removePlaceholders(): self
     {
         $this->_content = preg_replace(
             RockSolid_PageCache_Model_Placeholder::PATTERN, '', $this->_content
@@ -160,7 +162,7 @@ class RockSolid_PageCache_Model_Processor_Page
      *
      * @return RockSolid_PageCache_Helper_Data
      */
-    protected function _getHelper()
+    protected function _getHelper(): RockSolid_PageCache_Helper_Data
     {
         return Mage::helper('fpc');
     }

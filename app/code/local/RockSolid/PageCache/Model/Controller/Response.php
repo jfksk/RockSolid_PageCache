@@ -35,14 +35,14 @@ class RockSolid_PageCache_Model_Controller_Response
     /**
      * Meta-data to store with the page
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private $_metaData = [];
 
     /**
      * Cache tags for the page cache entry
      *
-     * @var array
+     * @var array<int, string>
      */
     private $_cacheTags = [];
 
@@ -59,12 +59,12 @@ class RockSolid_PageCache_Model_Controller_Response
     private $_requestIdModifier = null;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $_ignoreCacheTags;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $_rewriteCacheTags;
 
@@ -78,15 +78,14 @@ class RockSolid_PageCache_Model_Controller_Response
      *
      * @return bool
      */
-    public function canProcess() : bool
+    public function canProcess(): bool
     {
         if ($this->_canProcess !== null) {
             return $this->_canProcess;
         }
 
         $request = Mage::app()->getRequest();
-
-        if (!$request->isGet()) {
+        if ($request->getInternallyForwarded() || !$request->isGet()) {
             return $this->_canProcess = false;
         }
 
@@ -102,10 +101,6 @@ class RockSolid_PageCache_Model_Controller_Response
         }
 
         if (Mage::app()->getStore()->isAdmin())  {
-            return $this->_canProcess = false;
-        }
-
-        if ($request->getInternallyForwarded()) {
             return $this->_canProcess = false;
         }
 
@@ -144,24 +139,18 @@ class RockSolid_PageCache_Model_Controller_Response
      *
      * @return bool
      */
-    public function process() : bool
+    public function process(): bool
     {
         try {
             if (!$this->canProcess()) {
                 return false;
             }
 
-            $response = Mage::app()->getResponse();
-            $responseBody = $response->getBody();
+            $app      = Mage::app();
+            $request  = $app->getRequest();
+            $response = $app->getResponse();
 
-            $processorClass = Mage::getConfig()
-                ->getModelClassName('fpc/processor_page');
-            $cacheItemClass = Mage::getConfig()
-                ->getModelClassName('fpc/cache_item');
-
-            $request = Mage::app()->getRequest();
-
-            $fqn = Mage::app()->getFrontController()->getAction()->getFullActionName();
+            $fqn = $app->getFrontController()->getAction()->getFullActionName();
 
             $metaData = [];
             $metaData['request'] = [
@@ -177,9 +166,9 @@ class RockSolid_PageCache_Model_Controller_Response
             ];
 
             $layoutHandles = array_flip(
-                Mage::app()->getLayout()->getUpdate()->getHandles()
+                $app->getLayout()->getUpdate()->getHandles()
             );
-            // remove statefull handles
+            // remove stateful handles
             unset(
                 $layoutHandles['customer_logged_out'],
                 $layoutHandles['customer_logged_in'],
@@ -187,6 +176,9 @@ class RockSolid_PageCache_Model_Controller_Response
                 $layoutHandles[PersistentHelper::LOGGED_OUT_LAYOUT_HANDLE]
             );
             $metaData['layout_handles'] = array_flip($layoutHandles);
+
+            $responseBody   = $response->getBody();
+            $processorClass = Mage::getConfig()->getModelClassName('fpc/processor_page');
 
             $processor = new $processorClass($this->getCacheId(), $responseBody);
             $processor->replaceContent();
@@ -203,6 +195,8 @@ class RockSolid_PageCache_Model_Controller_Response
 
             Mage::dispatchEvent('fpc_save_page_before', $eventData);
             Mage::dispatchEvent("fpc_save_page_{$fqn}_before", $eventData);
+
+            $cacheItemClass = Mage::getConfig()->getModelClassName('fpc/cache_item');
 
             $cacheItem = new $cacheItemClass(
                 $processor->getContent(), array_merge($metaData, $this->_metaData)
@@ -244,9 +238,9 @@ class RockSolid_PageCache_Model_Controller_Response
      *
      * @param string $type
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function _getParameterConfig(string $type) : array
+    protected function _getParameterConfig(string $type): array
     {
         $config = Mage::getConfig()->getNode("frontend/fpc/response/parameters/$type");
 
@@ -260,9 +254,9 @@ class RockSolid_PageCache_Model_Controller_Response
     /**
      * Add cachetags for the page to be stored
      *
-     * @param array $tags
+     * @param array<int, string> $tags
      *
-     * @return void
+     * @return self
      */
     public function addCacheTags(array $tags)
     {
@@ -274,6 +268,8 @@ class RockSolid_PageCache_Model_Controller_Response
         $tags = array_diff($tags, $this->_ignoreCacheTags);
 
         $this->_cacheTags = array_merge($this->_cacheTags, array_flip($tags));
+
+        return $this;
     }
 
     /**
@@ -302,7 +298,7 @@ class RockSolid_PageCache_Model_Controller_Response
     /**
      * Add meta-data for the page to be stored
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      *
      * @return self
      */
@@ -318,7 +314,7 @@ class RockSolid_PageCache_Model_Controller_Response
      *
      * @return string|null md5 value
      */
-    public function getRequestIdModifier() : string
+    public function getRequestIdModifier(): string
     {
         if ($this->_requestIdModifier !== null) {
             return $this->_requestIdModifier;
@@ -372,7 +368,7 @@ class RockSolid_PageCache_Model_Controller_Response
      */
     protected function _currencyModifier()
     {
-        $store = Mage::app()->getCurrentStore();
+        $store   = Mage::app()->getCurrentStore();
         $session = Mage::getSingleton('core/session');
 
         if ($store->getDefaultCurrency() != $session->getCurrencyCode()) {
@@ -449,7 +445,7 @@ class RockSolid_PageCache_Model_Controller_Response
     /**
      * Stores the cache key modifier (if any) into a cookie
      *
-     * @return void
+     * @return self
      */
     public function memorizeRequestIdModifier()
     {
@@ -459,12 +455,12 @@ class RockSolid_PageCache_Model_Controller_Response
         $modifierCookie = $cookie->get(self::ID_MODIFIER_COOKIE);
 
         if (!$modifier && !$modifierCookie) {
-            return;
+            return $this;
         }
 
         if (!$modifier && $modifierCookie) {
             $cookie->delete(self::ID_MODIFIER_COOKIE);
-            return;
+            return $this;
         }
 
         $lifeTime = 0;
@@ -474,9 +470,11 @@ class RockSolid_PageCache_Model_Controller_Response
 
         if ($modifierCookie == $modifier) {
             $cookie->renew(self::ID_MODIFIER_COOKIE, $lifeTime);
-            return;
+            return $this;
         }
 
         $cookie->set(self::ID_MODIFIER_COOKIE, $modifier, $lifeTime);
+
+        return $this;
     }
 }

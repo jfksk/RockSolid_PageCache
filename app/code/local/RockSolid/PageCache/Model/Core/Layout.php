@@ -201,17 +201,17 @@ class RockSolid_PageCache_Model_Core_Layout extends Mage_Core_Model_Layout
      *
      * @param string $blockName
      *
-     * @return void
+     * @return self
      */
-    public function generateSiblings(string $blockName)
+    public function generateSiblings(string $blockName): self
     {
         if (isset($this->_output[$blockName])) {
-            return;
+            return $this;
         }
 
         $nodes = $this->getXpath("//block[@name='".$blockName."']");
         if (!$nodes) {
-            return;
+            return $this;
         }
 
         Varien_Profiler::start('FPC::layout::generate_block');
@@ -235,5 +235,7 @@ class RockSolid_PageCache_Model_Core_Layout extends Mage_Core_Model_Layout
         $this->_lazyRendering = false;
 
         Varien_Profiler::stop('FPC::layout::generate_block');
+
+        return $this;
     }
 }

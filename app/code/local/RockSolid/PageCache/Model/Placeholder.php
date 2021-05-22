@@ -52,7 +52,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
     /**
      * Named cache key info of the block
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private $_blockInfo = [];
 
@@ -66,13 +66,13 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      * @return self
      * @throws Exception
      */
-    public static function fromString(string $data) : self
+    public static function fromString(string $data): self
     {
         return new self(json_decode(base64_decode($data), true));
     }
 
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      * @throws Exception
      */
     public function __construct(array $data = [])
@@ -109,7 +109,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return bool
      */
-    public function getIsAnonymousBlock() : bool
+    public function getIsAnonymousBlock(): bool
     {
         return $this->_isAnonymousBlock;
     }
@@ -119,7 +119,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return string
      */
-    public function getBlockType() : string
+    public function getBlockType(): string
     {
         return $this->_blockType;
     }
@@ -129,7 +129,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return string
      */
-    public function getBlockName() : string
+    public function getBlockName(): string
     {
         return $this->_blockName;
     }
@@ -139,7 +139,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return array
      */
-    public function getBlockAttributes() : array
+    public function getBlockAttributes(): array
     {
         return $this->_blockAttributes;
     }
@@ -149,7 +149,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return array
      */
-    public function getBlockInfo() : array
+    public function getBlockInfo(): array
     {
         return $this->_blockInfo;
     }
@@ -159,7 +159,7 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      *
      * @return string
      */
-    public function toString() : string
+    public function toString(): string
     {
         return '<!--{{' . base64_encode(json_encode($this)) . '}}-->';
     }

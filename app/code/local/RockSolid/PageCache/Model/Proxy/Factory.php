@@ -39,13 +39,13 @@ class RockSolid_PageCache_Model_Proxy_Factory
      * Factory that creates a $proxy $for a given class and returns the instance.
      *  The Interceptor will be created OTF
      *
-     * @param $proxy
-     * @param $for
+     * @param string $proxy
+     * @param string $for
      * @param array $args optional constructor arguments
      * @return object
      * @throws ReflectionException
      */
-    public function getInstance($proxy, $for, array $args = [])
+    public function getInstance(string $proxy, string $for, array $args = [])
     {
         $class = $this->getClass($proxy, $for);
         return new $class($args);
@@ -55,12 +55,12 @@ class RockSolid_PageCache_Model_Proxy_Factory
      * Returns the class-name of an $proxy $for a given class.
      *  The Interceptor will be created OTF
      *
-     * @param $proxy
-     * @param $for
+     * @param string $proxy
+     * @param string $for
      * @return string
      * @throws ReflectionException
      */
-    public function getClass($proxy, $for)
+    public function getClass(string $proxy, string $for): string
     {
         $class = Mage::getConfig()->getModelClassName($proxy);
 
@@ -88,7 +88,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
      *
      * @return string
      */
-    public function getInterceptorCodeDir()
+    public function getInterceptorCodeDir(): string
     {
         return Mage::getBaseDir('var') . DS . 'code' . DS . 'FPC' . DS .  'Proxy' . DS ;
     }
@@ -98,7 +98,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
      *
      * @return string
      */
-    protected function _getInterceptorClassName()
+    protected function _getInterceptorClassName(): string
     {
         return $this->_origFor . '_Interceptor';
     }
@@ -108,7 +108,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
      *
      * @return string
      */
-    protected function _getOrigForClassName()
+    protected function _getOrigForClassName(): string
     {
         $classArr = explode('/', $this->_forAlias);
         $grp = Mage::getConfig()->getNode('global/models/' . $classArr[0] . '/class');
@@ -121,7 +121,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
      *
      * @return string
      */
-    protected function _getInterceptorFileName()
+    protected function _getInterceptorFileName(): string
     {
 
         return str_replace('_', '', $this->_getInterceptorClassName()) . '.php';
@@ -309,7 +309,7 @@ EOD;
      * @return string
      * @throws ReflectionException
      */
-    protected function _generateMethodParameter(ReflectionParameter $param)
+    protected function _generateMethodParameter(ReflectionParameter $param): string
     {
         $output = '';
 

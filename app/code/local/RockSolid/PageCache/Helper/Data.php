@@ -30,7 +30,7 @@ class RockSolid_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $content
      * @return string
      */
-    public function replaceSid(string $content) : string
+    public function replaceSid(string $content): string
     {
         if (!$content) {
             return $content;
@@ -51,7 +51,7 @@ class RockSolid_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $content
      * @return string
      */
-    public function restoreSid(string $content) : string
+    public function restoreSid(string $content): string
     {
         if (!$content) {
             return $content;
@@ -69,7 +69,7 @@ class RockSolid_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $content
      * @return string
      */
-    public static function replaceFormKey(string $content) : string
+    public static function replaceFormKey(string $content): string
     {
         if (!$content) {
             return $content;
@@ -89,7 +89,7 @@ class RockSolid_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $content
      * @return string
      */
-    public static function restoreFormKey(string $content) : string
+    public static function restoreFormKey(string $content): string
     {
         if (!$content) {
             return false;

@@ -33,14 +33,14 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
     /**
      * Filtered request parameters
      *
-     * @var array|null
+     * @var array<string, string>|null
      */
     private $_params = null;
 
     /**
      * Parsed routing config
      *
-     * @var array|null
+     * @var array<string, string>|null
      */
     private static $_routeConfig = null;
 
@@ -49,21 +49,21 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
      *
      * @return bool
      */
-    abstract public function canProcess() : bool;
+    abstract public function canProcess(): bool;
 
     /**
      * Check if the request can be processed
      *
      * @return bool
      */
-    abstract public function process() : bool;
+    abstract public function process(): bool;
 
     /**
      * Generates an id for the current request (once) and returns it
      *
      * @return string
      */
-    public function getRequestId() : string
+    public function getRequestId(): string
     {
         if ($this->_requestId !== null) {
             return $this->_requestId;
@@ -93,9 +93,9 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
     /**
      * Returns the context filtered URI params of the current request
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function _getParameters() : array
+    protected function _getParameters(): array
     {
         if ($this->_params !== null) {
             return $this->_params;
@@ -132,7 +132,7 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
      *
      * @return bool
      */
-    protected function _hasBlockingParameters() : bool
+    protected function _hasBlockingParameters(): bool
     {
         $rules = $this->_getParameterConfig('block');
         if (empty($rules)) {
@@ -151,9 +151,9 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
      * Returns the rewrite configuration from
      *   "config/frontend/fpc/request/routes"
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function _getRouteConfiguration() : array
+    protected function _getRouteConfiguration(): array
     {
         if (self::$_routeConfig !== null) {
             return self::$_routeConfig;
@@ -183,14 +183,14 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
      *
      * @return string
      */
-    abstract public function getRequestIdModifier() : string;
+    abstract public function getRequestIdModifier(): string;
 
     /**
      * Returns the cache ID for the current request
      *
      * @return string
      */
-    public function getCacheId() : string
+    public function getCacheId(): string
     {
         return $this->getRequestId() . $this->getRequestIdModifier();
     }
@@ -200,7 +200,7 @@ abstract class RockSolid_PageCache_Model_Controller_Abstract
      *
      * @return RockSolid_PageCache_Model_Cache
      */
-    protected function _getCache()
+    protected function _getCache(): RockSolid_PageCache_Model_Cache
     {
         return Mage::getSingleton('fpc/cache');
     }
