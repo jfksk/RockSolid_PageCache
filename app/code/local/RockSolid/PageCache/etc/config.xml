@@ -210,6 +210,14 @@
                     </rocksolid_pagecache>
                 </observers>
             </fpc_save_page_catalog_product_view_before>
+            <fpc_save_page_cms_page_view_before>
+                <observers>
+                    <rocksolid_pagecache>
+                        <class>fpc/observer</class>
+                        <method>registerCmsPageView</method>
+                    </rocksolid_pagecache>
+                </observers>
+            </fpc_save_page_cms_page_view_before>
             <fpc_save_page_catalogsearch_result_index_before>
                 <observers>
                     <rocksolid_pagecache>

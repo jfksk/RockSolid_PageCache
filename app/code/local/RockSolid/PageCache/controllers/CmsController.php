@@ -24,9 +24,13 @@ class RockSolid_PageCache_CmsController
 {
     public function viewAction()
     {
+        $fpcRequestController = $this->getFpcRequestController();
         $id = (int) $this->getRequest()->getParam(
             'id', Mage::getStoreConfig(Mage_Cms_Helper_Page::XML_PATH_HOME_PAGE)
         );
+
+        $data = $fpcRequestController->getMetaData('cms_page');
+        $data['page_id'] = $id;
 
         /** @var RockSolid_PageCache_Model_Proxy_CmsPage **/
         $page = Mage::getSingleton('fpc/proxy_factory')->getInstance(

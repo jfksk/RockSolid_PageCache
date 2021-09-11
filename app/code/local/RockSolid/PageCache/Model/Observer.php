@@ -193,6 +193,29 @@ class RockSolid_PageCache_Model_Observer
     /**
      * Add additional metadata to the page cache
      *
+     * EVENT: fpc_save_page_cms_page_view_before
+     *
+     * @param Varien_Event_Observer $event
+     */
+    public function registerCmsPageView(Varien_Event_Observer $event)
+    {
+        if (!$this->_isRequestCacheable()) {
+            return;
+        }
+
+        $page = Mage::getSingleton('cms/page');
+        $this->_responseController->addMetaData(
+            [
+                'cms_page' => [
+                    'title' => $page->getTitle(),
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Add additional metadata to the page cache
+     *
      * EVENT: fpc_save_page_catalog_category_view_before
      *
      * @param Varien_Event_Observer $event
@@ -203,6 +226,7 @@ class RockSolid_PageCache_Model_Observer
             return;
         }
 
+        /** @var Mage_Catalog_Model_Category $category */
         $category = Mage::registry('current_category');
         $this->_responseController->addMetaData(
             [
@@ -227,6 +251,7 @@ class RockSolid_PageCache_Model_Observer
             return;
         }
 
+        /** @var Mage_Catalog_Model_Product $product */
         $product = Mage::registry('current_product');
         $this->_responseController->addMetaData(
             [
