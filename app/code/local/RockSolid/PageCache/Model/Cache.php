@@ -81,9 +81,19 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
      */
     public function clean($tags = [])
     {
-        $res = parent::clean($tags);
+        $mode = Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG;
 
-        if (empty($tags)) {
+        if (!empty($tags)) {
+            if (!is_array($tags)) {
+                $tags = [$tags];
+            }
+            $res = $this->getFrontend()->clean($mode, $this->_tags($tags));
+        } else {
+            $res = $this->getFrontend()->clean($mode, [self::CACHE_TAG]);
+            $res = $res && $this->getFrontend()->clean(
+                    $mode, [Mage_Core_Model_Config::CACHE_TAG]
+                );
+
             $this->flushInterceptors();
         }
 
