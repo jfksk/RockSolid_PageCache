@@ -123,6 +123,7 @@ class RockSolid_PageCache_Model_Proxy_Factory
      */
     protected function _getInterceptorFileName(): string
     {
+
         return str_replace('_', '', $this->_getInterceptorClassName()) . '.php';
     }
 
@@ -134,6 +135,8 @@ class RockSolid_PageCache_Model_Proxy_Factory
      */
     protected function _generateInterception()
     {
+        clearstatcache();
+
         $path = $this->getInterceptorCodeDir();
         if (!file_exists($path) || !is_dir($path)) {
             mkdir($path, 0770, true);

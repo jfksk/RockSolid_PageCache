@@ -47,10 +47,10 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
     /**
      * Save data to cache
      *
-     * @param string $data
-     * @param string $id
-     * @param array  $tags
-     * @param int    $lifeTime
+     * @param string   $data
+     * @param string   $id
+     * @param array    $tags
+     * @param int|null $lifeTime
      *
      * @return bool
      */
@@ -81,22 +81,10 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
      */
     public function clean($tags = [])
     {
-        $mode = Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG;
+        $res = parent::clean($tags);
 
-        if (!empty($tags)) {
-            if (!is_array($tags)) {
-                $tags = [$tags];
-            }
-            $res = $this->getFrontend()->clean($mode, $this->_tags($tags));
-        } else {
-            $res = $this->getFrontend()->clean($mode, [self::CACHE_TAG]);
-            $res = $res && $this->getFrontend()->clean(
-                $mode, [Mage_Core_Model_Config::CACHE_TAG]
-            );
-
-            mageDelTree(
-                Mage::getSingleton('fpc/proxy_factory')->getInterceptorCodeDir()
-            );
+        if (empty($tags)) {
+            $this->flushInterceptors();
         }
 
         return $res;
@@ -110,12 +98,28 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
     public function flush()
     {
         $res = parent::flush();
-
-        mageDelTree(
-            Mage::getSingleton('fpc/proxy_factory')->getInterceptorCodeDir()
-        );
+        $this->flushInterceptors();
 
         return $res;
+    }
+
+    /**
+     * Flush cached interceptors
+     *
+     * @return  self
+     */
+    public function flushInterceptors()
+    {
+        clearstatcache();
+
+        $dir = Mage::getSingleton('fpc/proxy_factory')->getInterceptorCodeDir();
+        if (!is_dir($dir)) {
+            return $this;
+        }
+
+        array_map('unlink', glob("{$dir}*.php"));
+
+        return $this;
     }
 
     /**
