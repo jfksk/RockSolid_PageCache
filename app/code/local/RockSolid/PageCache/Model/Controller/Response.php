@@ -24,13 +24,13 @@ use Mage_Persistent_Helper_Data as PersistentHelper;
 class RockSolid_PageCache_Model_Controller_Response
     extends RockSolid_PageCache_Model_Controller_Abstract
 {
-    CONST CURRENCY_MODIFIER_PATH       = 'system/fpc/modifier_curency';
-    CONST CUSTOMER_GROUP_MODIFIER_PATH = 'system/fpc/modifier_customer_group';
-    CONST TAX_MODIFIER_PATH            = 'system/fpc/modifier_tax';
-    CONST STORE_MODIFIER_PATH          = 'system/fpc/modifier_store';
+    const CURRENCY_MODIFIER_PATH        = 'system/fpc/modifier_curency';
+    const CUSTOMER_GROUP_MODIFIER_PATH  = 'system/fpc/modifier_customer_group';
+    const CUSTOMER_GROUPS_MODIFIER_PATH = 'system/fpc/modifier_customer_groups';
+    const TAX_MODIFIER_PATH             = 'system/fpc/modifier_tax';
+    const STORE_MODIFIER_PATH           = 'system/fpc/modifier_store';
 
-    CONST NOCACHE_CUSTOMER_GRP_PATH    = 'system/fpc/nocache_customer_groups';
-    CONST PARAM_CNT_PATH               = 'system/fpc/allowed_param_count';
+    const PARAM_CNT_PATH               = 'system/fpc/allowed_param_count';
 
     /**
      * Meta-data to store with the page
@@ -110,13 +110,6 @@ class RockSolid_PageCache_Model_Controller_Response
 
         if (count($this->_getParameters()) > intval(Mage::getStoreConfig(self::PARAM_CNT_PATH))) {
             return $this->_canProcess = false;
-        }
-
-        if ($noCacheCustomerGrps = explode(',', Mage::getStoreConfig(self::NOCACHE_CUSTOMER_GRP_PATH))) {
-            $currentCustomerGrp = Mage::getSingleton('customer/session')->getCustomer()->getGroupId();
-            if (in_array($currentCustomerGrp, $noCacheCustomerGrps)) {
-                return $this->_canProcess = false;
-            }
         }
 
         $flag = new Varien_Object(['can_process' => true]);
@@ -388,6 +381,12 @@ class RockSolid_PageCache_Model_Controller_Response
         $group = Mage::getSingleton('customer/session')->getCustomerGroupId();
         if (!$group) {
             return null;
+        }
+
+        if ($groups = explode(',', Mage::getStoreConfig(self::CUSTOMER_GROUPS_MODIFIER_PATH))) {
+            if (!in_array($group, $groups)) {
+                return null;
+            }
         }
 
         return $group;
