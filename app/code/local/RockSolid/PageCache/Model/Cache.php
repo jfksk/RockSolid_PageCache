@@ -93,8 +93,6 @@ class RockSolid_PageCache_Model_Cache extends Mage_Core_Model_Cache
             $res = $res && $this->getFrontend()->clean(
                     $mode, [Mage_Core_Model_Config::CACHE_TAG]
                 );
-
-            $this->flushInterceptors();
         }
 
         return $res;
