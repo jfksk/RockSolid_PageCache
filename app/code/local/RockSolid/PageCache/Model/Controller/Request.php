@@ -124,14 +124,14 @@ class RockSolid_PageCache_Model_Controller_Request
         } catch (Exception $e) {
             $this->_isCached = false;
             $this->_canProcess = false;
-            $this->_getCache()->remove($this->getRequestId());
+            $this->_getCache()->remove($this->getCacheId());
             Mage::logException($e);
 
             return false;
         } catch (Error $e) {
             $this->_isCached = false;
             $this->_canProcess = false;
-            $this->_getCache()->remove($this->getRequestId());
+            $this->_getCache()->remove($this->getCacheId());
             Mage::log(
                 sprintf('%s in %s:%s', $e->getMessage(), $e->getFile(), $e->getLine()),
                 Zend_Log::ERR

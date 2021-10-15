@@ -198,7 +198,7 @@ class RockSolid_PageCache_Model_Controller_Response
 
             $this->_getCache()->save(
                 serialize($cacheItem),
-                $this->getRequestId(),
+                $this->getCacheId(),
                 array_keys($this->_cacheTags),
                 $ttlTransport->getTtl()
             );
@@ -211,12 +211,12 @@ class RockSolid_PageCache_Model_Controller_Response
 
             return true;
         } catch (Exception $e) {
-            $this->_getCache()->remove($this->getRequestId());
+            $this->_getCache()->remove($this->getCacheId());
             Mage::logException($e);
 
             return false;
         } catch (Error $e) {
-            $this->_getCache()->remove($this->getRequestId());
+            $this->_getCache()->remove($this->getCacheId());
             Mage::log(
                 sprintf('%s in %s:%s', $e->getMessage(), $e->getFile(), $e->getLine()),
                 Zend_Log::ERR
