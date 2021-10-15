@@ -148,6 +148,7 @@ class RockSolid_PageCache_Model_Controller_Response
             $metaData = [];
             $metaData['request'] = [
                 'fqn'          => $fqn,
+                'route_name'   => $request->getRouteName(),
                 'path_info'    => $request->getPathInfo(),
                 'routing_info' => [
                     'aliases'          => $request->getAliases(),

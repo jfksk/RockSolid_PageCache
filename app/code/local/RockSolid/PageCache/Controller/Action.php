@@ -90,6 +90,10 @@ abstract class RockSolid_PageCache_Controller_Action extends Mage_Core_Controlle
         try {
             $actionMethodName = $action . 'Action';
 
+            $this->getRequest()->setRouteName(
+                $this->getFpcRequestController()->getMetaData('request/route_name')
+            );
+
             Varien_Profiler::start(self::PROFILER_KEY.'::predispatch');
             $this->preDispatch();
             Varien_Profiler::stop(self::PROFILER_KEY.'::predispatch');
