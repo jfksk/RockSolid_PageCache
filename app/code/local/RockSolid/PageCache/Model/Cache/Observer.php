@@ -29,7 +29,6 @@ class RockSolid_PageCache_Model_Cache_Observer
      *   - clean_media_cache_after
      *   - clean_catalog_images_cache_after
      *   - adminhtml_cache_flush_all
-     *   - catalogrule_after_apply
      *   - clean_configurable_swatches_cache_after
      *
      * @return void
@@ -161,9 +160,31 @@ class RockSolid_PageCache_Model_Cache_Observer
         $object = $observer->getEvent()->getItem();
         if ($object->getStockStatusChangedAuto()) {
             $this->_getCacheInstance()->clean(
-                [Mage_Catalog_Model_Product::CACHE_TAG . '_' .  $object->getProductId()]
+                [Mage_Catalog_Model_Product::CACHE_TAG . '_' . $object->getProductId()]
             );
         }
+    }
+
+
+    /**
+     *  Event: catalogrule_after_apply
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function registerCatalogRuleApply(Varien_Event_Observer $observer)
+    {
+        if (!$this->_isCacheEnabled()) {
+            return;
+        }
+
+        $tags = [];
+        $productId = $observer->getEvent()->getProduct();
+        if ($productId) {
+            $tags = [Mage_Catalog_Model_Product::CACHE_TAG . '_' . $productId];
+        }
+
+        $this->_getCacheInstance()->clean($tags);
     }
 
     /**

@@ -350,7 +350,7 @@
                 <observers>
                     <rocksolid_pagecache>
                         <class>fpc/cache_observer</class>
-                        <method>cleanCache</method>
+                        <method>registerCatalogRuleApply</method>
                     </rocksolid_pagecache>
                 </observers>
             </catalogrule_after_apply>
