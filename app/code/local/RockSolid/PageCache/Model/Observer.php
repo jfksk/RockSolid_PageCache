@@ -152,11 +152,9 @@ class RockSolid_PageCache_Model_Observer
      */
     public function handleResponseSendBefore(Varien_Event_Observer $event)
     {
-        if (!$this->_responseController->canProcess()) {
-            return;
+        if (Mage::getSingleton('fpc/cache')->isActive()) {
+            $this->_responseController->memorizeRequestIdModifier();
         }
-
-        $this->_responseController->memorizeRequestIdModifier();
 
         if (!$this->_isRequestCacheable()) {
             return;
