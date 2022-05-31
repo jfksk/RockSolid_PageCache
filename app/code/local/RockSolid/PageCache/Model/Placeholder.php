@@ -77,8 +77,8 @@ class RockSolid_PageCache_Model_Placeholder implements JsonSerializable
      */
     public function __construct(array $data = [])
     {
-        if (!empty($data['is_anonymous_block'])) {
-            $this->_isAnonymousBlock = (bool)$data['is_anonymous_block'];
+        if (!empty($data['is_anonymous'])) {
+            $this->_isAnonymousBlock = (bool)$data['is_anonymous'];
         }
 
         if (!empty($data['block_type'])) {

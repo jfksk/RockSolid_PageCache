@@ -78,11 +78,11 @@ class RockSolid_PageCache_Model_Observer
         $placeholder = Mage::getModel(
             'fpc/placeholder',
             [
-                'is_anonymous_block' => $block->getIsAnonymous(),
-                'block_type'         => $type,
-                'block_name'         => $block->getNameInLayout(),
-                'block_attributes'   => $this->_extractBlockAttributes($block),
-                'block_info'         => $this->_extractBlockInfo($block)
+                'is_anonymous'     => $block->getIsAnonymous(),
+                'block_type'       => $type,
+                'block_name'       => $block->getNameInLayout(),
+                'block_attributes' => $this->_extractBlockAttributes($block),
+                'block_info'       => $this->_extractBlockInfo($block)
             ]
         );
 
