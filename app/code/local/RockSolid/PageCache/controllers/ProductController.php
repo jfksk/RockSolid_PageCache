@@ -30,7 +30,7 @@ class RockSolid_PageCache_ProductController
         $fpcRequestController = $this->getFpcRequestController();
 
         $productId  = (int) $request->getParam('id');
-        $categoryId = (int) $request->getParam('category', null);
+        $categoryId = (int) $request->getParam('category', 0);
 
         $proxyFactory = Mage::getSingleton('fpc/proxy_factory');
 
@@ -42,7 +42,7 @@ class RockSolid_PageCache_ProductController
             'fpc/proxy_product', 'catalog/product', $data
         );
 
-        if (!$categoryId && ($categoryId !== false)) {
+        if (!$categoryId && ($categoryId !== 0)) {
             $lastId = $session->getLastVisitedCategoryId();
             if ($lastId && $product->canBeShowInCategory($lastId)) {
                 $categoryId = $lastId;
