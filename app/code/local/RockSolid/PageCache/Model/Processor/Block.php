@@ -170,6 +170,7 @@ HTML;
         $layout = Mage::app()->getLayout();
 
         $attributes = $this->_placeholder->getBlockAttributes();
+        $attributes += $this->_placeholder->getBlockInfo();
 
         if ($this->_placeholder->getIsAnonymousBlock()) {
             return $layout->createBlock(
