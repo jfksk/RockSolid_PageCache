@@ -197,6 +197,10 @@ class RockSolid_PageCache_Model_Proxy_Factory
 
             $code[$methodKey] .= sprintf('(%s) ', implode(', ', $params));
 
+            if ($returnType = $method->getReturnType()) {
+                $code[$methodKey] .= ": {$returnType} ";
+            }
+
             if (isset($methodConfig[$methodKey]['before'])) {
                $code[$methodKey] .= sprintf(
                     '{ $this->%s(); return parent::%s(%s); }',
