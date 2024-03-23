@@ -102,7 +102,7 @@ class RockSolid_PageCache_Model_Observer
     {
         if ($attrString = $block->getData('fpc_attributes')) {
             $attributes = array_map(
-                'trim', explode($attrString, ',')
+                'trim', explode(',', $attrString)
             );
 
             return $block->toArray($attributes);
