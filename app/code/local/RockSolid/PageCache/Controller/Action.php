@@ -109,6 +109,8 @@ abstract class RockSolid_PageCache_Controller_Action extends Mage_Core_Controlle
                 $this->postDispatch();
                 Varien_Profiler::stop(self::PROFILER_KEY.'::postdispatch');
             }
+        } catch (Mage_Core_Model_Session_Exception $e) {
+            $this->getResponse()->setRedirect(Mage::getBaseUrl());
         } catch (Exception $e) {
             Mage::logException($e);
             $this->_forwardOriginal();
